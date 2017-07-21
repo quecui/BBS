@@ -1,0 +1,8 @@
+@import dto.PostDTO
+@(previewPost: PostDTO)
+
+<div class="list-post">
+    <span class="title-post">@previewPost.title</span>
+    <span class="email-creater"><i>Creater: @previewPost.emailCreater </i></span>
+    <p> @previewPost.content </p>
+</div>

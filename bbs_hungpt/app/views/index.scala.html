@@ -1,0 +1,13 @@
+@import dto.PostDTO
+@(listPost: List[PostDTO])
+
+@main("Blog Septeni-Technology") {
+  <h1 class="title">Blog Septeni-Technology</h1>
+  <div class="body-post">
+
+    <h2>All posts</h2>
+    @for(post <- listPost){
+      @views.html.previewPost(post)
+    }
+  </div>
+}

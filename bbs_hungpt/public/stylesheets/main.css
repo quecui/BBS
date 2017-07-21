@@ -1,0 +1,33 @@
+.title{
+    margin-left: 35%
+}
+
+.body-post{
+    margin-top: 36px;
+    width: 75%;
+    margin: auto;
+    font-family: Arial;
+}
+
+.list-post{
+    border-bottom: 1px solid red;
+    margin-bottom: 25px;
+}
+
+.title-post{
+    font-size: 40px;
+    color: #242aff;
+}
+
+.email-creater{
+    float: right;
+    margin-top: 27px;
+    margin-right: 26px;
+    color: #ff95f5;
+}
+
+.set-data{
+    margin: auto;
+    font-size: 50px;
+    color: red;
+}
