@@ -1,0 +1,44 @@
+
+@(postForm: Form[PostForm])(implicit messagesProvider: MessagesProvider)
+@if(postForm.hasGlobalErrors) {
+    <ul style="display: none">
+    @for(error <- postForm.globalErrors) {
+        <li>@error.format</li>
+    }
+    </ul>
+}
+
+@main("BBS"){
+
+
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <h2>Create new post</h2>
+        <div class="post-style">
+
+            @helper.form(action = routes.PostController.createPost()){
+                @helper.inputText(postForm("title"),
+                    'placeholder -> "Your title",
+                    '_label -> "Title",
+                    'required -> "required",
+                    'class -> "title-field",
+                    'minlength -> 8,
+                    'maxlength -> 100,
+                    '_help -> "")
+
+                @helper.textarea(postForm("content"), '_label -> "Content",
+                    '_showConstraints -> false,
+                    'placeholder -> "Your Content",
+                    'required -> "required",
+                    'class -> "content-field",
+                    'minlength -> 200,
+                    'maxlength -> 1000,
+                    '_help -> ""
+                )
+
+                <div>
+                    <input type="submit" value="Create New Post" class="button-style">
+                </div>
+            }
+        </div>
+    </div>
+}

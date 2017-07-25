@@ -1,33 +1,35 @@
 package services
 
-
 import dto.PostDTO
-import models.{Post, User}
+import models.{ Post, PostForm, User }
 import org.joda.time.DateTime
 
+import scala.util.{ Failure, Success, Try }
+
 /**
-  * Created by hung_pt on 7/20/17.
-  */
+ * Created by hung_pt on 7/20/17.
+ */
 trait PostService {
   def getAllPosts: List[PostDTO]
-  def setDefaultValue: Unit
+
+  def createNewPost(postForm: PostForm): Int
 }
 
-class PostServiceImpl extends PostService{
+class PostServiceImpl extends PostService {
   override def getAllPosts: List[PostDTO] = {
-    var listPost: List[Post] = Post.findAll()
+    val listPost: Try[List[Post]] = Post.findAll()
+
     var listPostDTO = List[PostDTO]()
 
-    for (i <- 0 until listPost.length){
-      //Find User By ID
-      var user = new User(1, "hungpt", "hung_pt@septeni-technology.jp", new DateTime())
-      listPostDTO ::= new PostDTO(listPost(i), user)
+    listPost match {
+      case Success(v) =>
+        listPostDTO = listPost.get.map(post => new PostDTO(post, new User(1, "hungpt", "hung_pt@septeni-technology.jp", new DateTime())))
     }
 
-    listPostDTO
+    listPostDTO.reverse
   }
 
-  override def setDefaultValue: Unit = {
-    Post.defaultData
+  override def createNewPost(postForm: PostForm): Int = {
+    Post.createPost(postForm).get
   }
 }

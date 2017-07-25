@@ -1,33 +1,41 @@
 package models
 
-import contants.ConstantData
 import org.joda.time.DateTime
-import scalikejdbc.WrappedResultSet
-import scalikejdbc._
+import scalikejdbc.{ WrappedResultSet, insert, _ }
+
+import scala.util.Try
 /**
-  * Created by hung_pt on 7/19/17.
-  */
+ * Created by hung_pt on 7/19/17.
+ */
 
 case class Post(
-                 id: Long,
-                 title: Option[String],
-                 content: Option[String],
-                 createdAt: DateTime,
-                 authorId: Long
-               )
-
+    id: Long,
+    title: String,
+    content: String,
+    createdAt: DateTime,
+    authorId: Long)
 
 object Post extends SQLSyntaxSupport[Post] {
   override val tableName = "posts"
+  val p = Post.syntax("p")
 
-  def apply(rs: WrappedResultSet) = new Post(
-    rs.long("id"), rs.stringOpt("title"), rs.stringOpt("content"), rs.jodaDateTime("created_at"), rs.long("author_id"))
+  def apply(e: ResultName[Post])(rs: WrappedResultSet): Post = new Post(
+    rs.long(e.id), rs.string(e.title), rs.string(e.content), rs.jodaDateTime(e.createdAt), rs.long(e.authorId))
 
-  def findAll()(implicit session: DBSession = autoSession): List[Post] =
-    sql"select * from posts".map(rs => Post(rs)).list.apply()
+  def findAll()(implicit session: DBSession = autoSession): Try[List[Post]] =
+    Try {
+      withSQL { select.from(Post as p) }.map(Post(p.resultName)).list().apply()
+    }
 
-  def defaultData()(implicit session: DBSession = autoSession): Unit = {
-    sql"insert into posts (title, content, created_at, author_id) values (${ConstantData.title}, ${ConstantData.content}, ${ConstantData.createAt}, 1)".update.apply()
+  def createPost(postForm: PostForm)(implicit dbsession: DBSession = AutoSession): Try[Int] = Try {
+    val p = Post.column
+    applyUpdate {
+      insert
+        .into(Post)
+        .columns(p.title, p.content, p.createdAt, p.authorId)
+        .values(postForm.title, postForm.content, new DateTime(), 1)
+    }
   }
+
 }
 

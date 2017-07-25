@@ -1,16 +1,14 @@
 package dto
 
-import models.{Post, User}
-
-import scala.collection.mutable.ListBuffer
+import models.{ Post, User }
 
 /**
-  * Created by hung_pt on 7/20/17.
-  */
-class PostDTO(post: Post, user: User){
-  var id = post.id
-  var title = post.title
-  var content = post.content
-  var createAt = post.createdAt
-  var emailCreater: String = user.email
+ * Created by hung_pt on 7/20/17.
+ */
+class PostDTO(post: Post, user: User) {
+  val id = post.id
+  val title = post.title
+  val content = post.content
+  val createAt = post.createdAt
+  val emailCreater: String = user.email
 }

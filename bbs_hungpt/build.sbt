@@ -12,23 +12,29 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.0" % Test,
   evolutions,
   jdbc,
-  specs2 % Test,
-//  "org.flywaydb" %% "flyway-play" % "4.0.0",
+
   "mysql" % "mysql-connector-java" % "5.1.38",
 
-  "org.skinny-framework" %% "skinny-orm"      % "2.3.7",
   "ch.qos.logback"       %  "logback-classic" % "1.1.+",
 
   "org.scalikejdbc" %% "scalikejdbc"               % "2.5.2",
   "org.scalikejdbc" %% "scalikejdbc-config"           % "2.5.0",
-  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0"
-)
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "com.septeni.controllers._"
+  "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0",
 
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "com.septeni.binders._"
+  "org.mockito" % "mockito-all" % "1.8.4"
+)
 
 initialCommands := """
 import scalikejdbc._
 """
+import com.typesafe.sbt.SbtScalariform
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
+
+import scalariform.formatter.preferences._
+
+val preferences =
+  ScalariformKeys.preferences := ScalariformKeys.preferences.value
+    .setPreference(AlignSingleLineCaseStatements, true)
+    .setPreference(DoubleIndentConstructorArguments, true)
+    .setPreference(DanglingCloseParenthesis, Preserve)
+SbtScalariform.scalariformSettings ++ Seq(preferences)
