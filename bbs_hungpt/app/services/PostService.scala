@@ -1,35 +1,42 @@
 package services
 
-import dto.PostDTO
-import models.{ Post, PostForm, User }
+import dtos.PostDTO
+import forms.PostForm
+import models.{ Post, User }
 import org.joda.time.DateTime
 
 import scala.util.{ Failure, Success, Try }
 
-/**
- * Created by hung_pt on 7/20/17.
- */
 trait PostService {
-  def getAllPosts: List[PostDTO]
+  def getAllPosts: Option[List[PostDTO]]
 
-  def createNewPost(postForm: PostForm): Int
+  def createNewPost(postForm: PostForm, authorId: Long): Boolean
 }
 
 class PostServiceImpl extends PostService {
-  override def getAllPosts: List[PostDTO] = {
-    val listPost: Try[List[Post]] = Post.findAll()
-
+  override def getAllPosts: Option[List[PostDTO]] = {
+    val listPost: Try[List[Post]] = Post.findAll() //new User(1, "hungpt", "1234", "hung_pt@septeni-technology.jp", new DateTime())
     var listPostDTO = List[PostDTO]()
 
     listPost match {
-      case Success(v) =>
-        listPostDTO = listPost.get.map(post => new PostDTO(post, new User(1, "hungpt", "hung_pt@septeni-technology.jp", new DateTime())))
+      case Success(listPost) =>
+        listPostDTO = listPost.map(post => new PostDTO(post, User.getUserById(post.authorId).get.get))
+        Some(listPostDTO)
+      case Failure(exception) =>
+        println("Error: " + exception.getMessage)
+        None
     }
-
-    listPostDTO.reverse
   }
 
-  override def createNewPost(postForm: PostForm): Int = {
-    Post.createPost(postForm).get
+  override def createNewPost(postForm: PostForm, authorId: Long): Boolean = {
+    val result: Try[Int] = Post.createPost(postForm, authorId)
+
+    result match {
+      case Success(result) => true
+      case Failure(exception) =>
+        println("Error: " + exception.getMessage)
+        false
+    }
+
   }
 }

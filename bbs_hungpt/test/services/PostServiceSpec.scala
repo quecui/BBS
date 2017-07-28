@@ -11,12 +11,8 @@ class PostServiceSpec extends PlaySpec with MockitoSugar {
 
   "Post Service Impl" should {
     "list preview post not empty" in {
-      val listPost = postService.getAllPosts
+      val listPost = postService.getAllPosts.get
       assert(listPost != Nil && listPost.length > 0)
-    }
-
-    "setDefaultValue()" in {
-      assert(postService.setDefaultValue == 1)
     }
   }
 }

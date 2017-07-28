@@ -1,0 +1,59 @@
+@import helper._
+
+@import forms.RegisterForm
+@(registerForm: Form[RegisterForm], message: String)(implicit messagesProvider: MessagesProvider, request: RequestHeader)
+
+@main("BBS", ""){
+    <div class="parent-container">
+        <div class="container">
+        @helper.form(action = routes.UserController.register()) {
+            <div id="register-title"><b>REGISTER NOW</b></div>
+            <div class="row">
+                <span class="title-form">Account</span>
+                <span class="account-message">@message</span>
+                <div class="">
+                    @CSRF.formField
+                    @helper.inputText(registerForm("username"),
+                        '_label -> "",
+                        'placeholder -> "Input Your Name",
+                        'class -> "register-input",
+                        'required -> "required",
+                        'minlength -> 5,
+                        'maxlength -> 16
+                    )
+                </div>
+                <div class="">
+                    @CSRF.formField
+                    @helper.inputText(registerForm("email"),
+                        '_label -> "",
+                        'placeholder -> "Input Your Email",
+                        'class -> "register-input",
+                        'required -> "required",
+                        'type -> "email",
+                        'minlength -> 5,
+                        'maxlength -> 46
+                    )
+
+                </div>
+                <span class="">
+                    @CSRF.formField
+                    @helper.inputPassword(registerForm("password"),
+                        '_label -> "",
+                        'placeholder -> "Input Your Password",
+                        'class -> "register-input",
+                        'required -> "required",
+                        'minlength -> 5,
+                        'maxlength -> 46
+                    )
+
+
+                </span>
+                <div>
+                    <button class="button-register">Submit</button>
+
+                </div>
+            </div>
+        }
+        </div>
+    </div>
+}

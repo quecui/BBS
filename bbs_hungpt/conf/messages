@@ -1,1 +1,4 @@
 # https://www.playframework.com/documentation/latest/ScalaI18N
+register.accout.exist=Account already exists
+login.fail=Email or Password Wrong
+posts.nodata=There are not no post at time

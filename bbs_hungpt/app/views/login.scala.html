@@ -1,0 +1,32 @@
+@import helper._
+@import forms.LoginForm
+
+@(loginForm: Form[LoginForm], message: String)(implicit messagesProvider: MessagesProvider, request: RequestHeader)
+@main("BBS", ""){
+    <div class="login-page">
+        <div class="form">
+            <span class="login-message">@message</span>
+            @helper.form(action = routes.UserController.authenticate()){
+                @CSRF.formField
+                @helper.inputText(loginForm("email"),
+                    'placeholder -> "Your Email",
+                    '_label -> "",
+                    'class -> "login-input",
+                    'required -> "required",
+                    'type -> "email",
+                    '_help -> "")
+
+                @CSRF.formField
+                @helper.inputPassword(loginForm("password"),
+                    'placeholder -> "Your Password",
+                    '_label -> "",
+                    'class -> "login-input",
+                    'required -> "required",
+                    '_help -> "")
+
+                <button>login</button>
+                <p class="message">Not registered? <a href="@routes.UserController.register()">Create an account</a></p>
+            }
+        </div>
+    </div>
+}

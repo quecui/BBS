@@ -12,7 +12,6 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.0" % Test,
   evolutions,
   jdbc,
-
   "mysql" % "mysql-connector-java" % "5.1.38",
 
   "ch.qos.logback"       %  "logback-classic" % "1.1.+",

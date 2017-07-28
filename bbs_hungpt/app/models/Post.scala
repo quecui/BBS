@@ -1,5 +1,6 @@
 package models
 
+import forms.PostForm
 import org.joda.time.DateTime
 import scalikejdbc.{ WrappedResultSet, insert, _ }
 
@@ -24,16 +25,16 @@ object Post extends SQLSyntaxSupport[Post] {
 
   def findAll()(implicit session: DBSession = autoSession): Try[List[Post]] =
     Try {
-      withSQL { select.from(Post as p) }.map(Post(p.resultName)).list().apply()
+      withSQL { select.from(Post as p).orderBy(p.createdAt).desc }.map(Post(p.resultName)).list().apply()
     }
 
-  def createPost(postForm: PostForm)(implicit dbsession: DBSession = AutoSession): Try[Int] = Try {
+  def createPost(postForm: PostForm, authorId: Long)(implicit dbsession: DBSession = AutoSession): Try[Int] = Try {
     val p = Post.column
     applyUpdate {
       insert
         .into(Post)
         .columns(p.title, p.content, p.createdAt, p.authorId)
-        .values(postForm.title, postForm.content, new DateTime(), 1)
+        .values(postForm.title, postForm.content, new DateTime(), authorId)
     }
   }
 

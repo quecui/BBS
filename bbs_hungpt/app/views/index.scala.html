@@ -1,13 +1,17 @@
-@import dto.PostDTO
+@import dtos.PostDTO
 @(listPost: List[PostDTO], message: String)
 
-@main("Blog Septeni-Technology") {
+@main("Blog Septeni-Technology", "username") {
   <div class="body-post">
 
-    <h2>All posts</h2>
-    <div class="nodata"><b>@message </b></div>
-    @for(post <- listPost){
-      @views.html.previewPost(post)
-    }
+    <span class="all-post"><b>All posts</b></span> <span><a href="@routes.PostController.createPost()"><button class="btn-new-post">Create New Post</button></a></span>
+    <div class="post-contaner">
+      <div class="nodata"><b>@message </b></div>
+      @for(post <- listPost){
+        @views.html.previewPost(post)
+      }
+    </div>
   </div>
+
+  <div class="footer"><i>Copyright © 2017 SEPTENI TECHNOLOGY Developer's Blog All rights reserved.</i></div>
 }

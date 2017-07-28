@@ -2,9 +2,6 @@ import org.scalatest.selenium.HtmlUnit
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 
-/**
- * Created by hung_pt on 7/24/17.
- */
 class ApplicationSpec extends PlaySpec with GuiceOneAppPerTest {
   "send 404 on a bad request" in new HtmlUnit {
     import java.net._
