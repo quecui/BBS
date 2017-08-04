@@ -9,6 +9,8 @@ import play.api.mvc._
 import play.i18n.MessagesApi
 import services.{ PostService, ResultStatus, UserService }
 
+import scala.util.{ Failure, Success }
+
 class UserController @Inject() (controllerComponent: ControllerComponents, userService: UserService)
   extends AbstractController(controllerComponent) with I18nSupport with Secured {
 
@@ -16,7 +18,6 @@ class UserController @Inject() (controllerComponent: ControllerComponents, userS
     RegisterForm.form.bindFromRequest.fold(
       formWithErrors => {
         BadRequest(views.html.register(formWithErrors, ""))
-
       },
       form => {
         userService.createNewUser(form) match {
@@ -33,15 +34,12 @@ class UserController @Inject() (controllerComponent: ControllerComponents, userS
     LoginForm.form.bindFromRequest.fold(
       formWithErrors => {
         BadRequest(views.html.login(formWithErrors, ""))
-
       },
       form => {
-        val user = userService.checkLogin(form)
-        user match {
-          case None                        => Ok(views.html.error())
-          case user if user.get.name == "" => Ok(views.html.login(LoginForm.form, Messages("login.fail")))
-          case user if user.get.name != "" => Redirect(routes.PostController.index()).
-            withSession(SecuredSessionKey -> user.get.name).addingToSession(IDSessionKey -> user.get.id.toString)
+        userService.checkLogin(form) match {
+          case Failure(user) => Ok(views.html.login(LoginForm.form, Messages("login.fail")))
+          case Success(user) => Redirect(routes.PostController.index()).
+            withSession(SecuredSessionKey -> user.name).addingToSession(IDSessionKey -> user.id.toString)
         }
       }
     )

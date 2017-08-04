@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc" %% "scalikejdbc-config"           % "2.5.0",
   "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.6.0",
 
-  "org.mockito" % "mockito-all" % "1.8.4"
+  "org.mockito" % "mockito-all" % "1.8.4",
+  specs2 % Test
 )
 
 initialCommands := """

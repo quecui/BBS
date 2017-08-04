@@ -13,12 +13,13 @@
                     '_label -> "",
                     'class -> "login-input",
                     'required -> "required",
+                    '_showConstraints -> false,
                     'type -> "email",
                     '_help -> "")
 
-                @CSRF.formField
                 @helper.inputPassword(loginForm("password"),
                     'placeholder -> "Your Password",
+                    '_showConstraints -> false,
                     '_label -> "",
                     'class -> "login-input",
                     'required -> "required",

@@ -1,10 +1,13 @@
 @import dtos.PostDTO
-@(listPost: List[PostDTO], message: String)
+@import forms.PostForm
+@import helper._
+@(listPost: List[PostDTO], postForm: Form[PostForm], message: String)(implicit messagesProvider: MessagesProvider,
+        request: RequestHeader, flash: Flash)
 
 @main("Blog Septeni-Technology", "username") {
+  @views.html.createPost(postForm)
   <div class="body-post">
-
-    <span class="all-post"><b>All posts</b></span> <span><a href="@routes.PostController.createPost()"><button class="btn-new-post">Create New Post</button></a></span>
+    <span class="all-post"><b>All posts</b></span>
     <div class="post-contaner">
       <div class="nodata"><b>@message </b></div>
       @for(post <- listPost){

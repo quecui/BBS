@@ -9,10 +9,10 @@ GET     /assets/*file             controllers.Assets.versioned(path="/public", f
 GET    /                          controllers.UserController.authenticate
 POST   /login                     controllers.UserController.authenticate
 
-GET    /posts/create              controllers.PostController.createPost
-POST   /posts                     controllers.PostController.createPost
+POST    /post                     controllers.PostController.createPost
 GET    /posts                     controllers.PostController.index
 
 GET    /register                  controllers.UserController.register
 POST   /register/process          controllers.UserController.register
 GET    /logout                    controllers.UserController.logout
+

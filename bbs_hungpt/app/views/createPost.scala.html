@@ -1,49 +1,42 @@
 @import helper._
-
 @import forms.PostForm
-@(postForm: Form[PostForm])(implicit messagesProvider: MessagesProvider, request: RequestHeader)
+@(postForm: Form[PostForm])(implicit messagesProvider: MessagesProvider, request: RequestHeader, flash: Flash)
 
-@main("BBS", "username"){
-    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-        <h2>Create new post</h2>
-
-        <div class="post-style">
-        @helper.form(action = routes.PostController.createPost()){
-
-            @if(postForm.hasGlobalErrors) {
-                <ul>
-                @for(error <- postForm.globalErrors) {
-                    <li>@error.messages</li>
-                }
-                </ul>
-            }
-
-            @CSRF.formField
-            @helper.inputText(postForm("title"),
-                'placeholder -> "Your title",
-                '_label -> "Title",
-                'required -> "required",
-                'class -> "title-field",
-                'minlength -> 8,
-                'maxlength -> 100,
-                '_help -> "")
-
-            @CSRF.formField
-            @helper.textarea(postForm("content"), '_label -> "Content",
-                '_showConstraints -> false,
-                'placeholder -> "Your Content",
-                'required -> "required",
-                'class -> "content-field",
-                'minlength -> 200,
-                'maxlength -> 1000,
-                '_help -> ""
-            )
-
-            <div>
-                <button class="button-style">Create New Post</button>
+<div>
+    <div class="create-post-title">What News ! You can create Post now !</div>
+    @if(flash.get("status").isDefined){
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Created a post successfully</p>
             </div>
-        }
         </div>
+    }
 
-    </div>
-}
+    @helper.form(action = routes.PostController.createPost()){
+        @CSRF.formField
+        @helper.inputText(postForm("title"),
+            'placeholder -> "Your title",
+            '_label -> "",
+            'required -> "required",
+            'class -> "title-field",
+            'info -> "",
+            'id -> "inputTitle",
+            'minLength -> 8,
+            'maxLength -> 100
+        )
+
+        @helper.textarea(postForm("content"), '_label -> "",
+            '_showConstraints -> false,
+            'placeholder -> "Your Content",
+            'required -> "required",
+            'class -> "content-field",
+            'minLength -> 200,
+            'maxLength -> 1000
+        )
+
+        <div>
+            <button class="button-style" id="btnPost">Create New Post</button>
+        </div>
+    }
+</div>

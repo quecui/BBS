@@ -23,7 +23,6 @@
                     )
                 </div>
                 <div class="">
-                    @CSRF.formField
                     @helper.inputText(registerForm("email"),
                         '_label -> "",
                         'placeholder -> "Input Your Email",
@@ -36,7 +35,6 @@
 
                 </div>
                 <span class="">
-                    @CSRF.formField
                     @helper.inputPassword(registerForm("password"),
                         '_label -> "",
                         'placeholder -> "Input Your Password",

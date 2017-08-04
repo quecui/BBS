@@ -12,12 +12,18 @@ case class User(
     password: String,
     email: String,
     createdAt: DateTime) {
-  def this() = this(0, "", "", "", new DateTime())
+  def this() = this(0, "test", "test@gmail.com", "test", new DateTime())
 }
 
 object User extends SQLSyntaxSupport[User] {
   override val tableName = "users"
   val u = User.syntax("u")
+
+  GlobalSettings.loggingSQLAndTime = new LoggingSQLAndTimeSettings(
+    enabled = true,
+    singleLineMode = true,
+    logLevel = 'DEBUG
+  )
 
   def apply(e: ResultName[User])(rs: WrappedResultSet): User = new User(
     rs.long(e.id), rs.string(e.name), rs.string(e.password), rs.string(e.email), rs.jodaDateTime(e.createdAt))
@@ -43,4 +49,5 @@ object User extends SQLSyntaxSupport[User] {
   def getUserById(id: Long)(implicit dbsession: DBSession = AutoSession): Try[Option[User]] = Try {
     withSQL { select.from(User as u).where.eq(u.id, id) }.map(User(u.resultName)).single.apply()
   }
+
 }

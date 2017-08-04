@@ -2,40 +2,42 @@ package controllers
 
 import javax.inject._
 
+import dtos.PostDTO
 import forms.PostForm
-import play.api.data.Form
 import play.api.i18n.{ I18nSupport, Messages }
 import play.api.mvc.{ Action, ControllerComponents, _ }
-import play.filters.csrf.{ CSRFAddToken, CSRFCheck }
-import play.i18n.MessagesApi
-import services.PostService
+import services.{ PostService, PostServiceImpl, ResultStatus }
+
+import scala.util.{ Failure, Success, Try }
 
 @Singleton
 class PostController @Inject() (controllerComponent: ControllerComponents, postService: PostService)
   extends AbstractController(controllerComponent) with I18nSupport with Secured {
 
   def index(): EssentialAction = withAuth { username => implicit request: Request[AnyContent] =>
-    var list = postService.getAllPosts
-    list match {
-      case None                      => Ok(views.html.error())
-      case list if list.get.isEmpty  => Ok(views.html.index(list.get, Messages("posts.nodata")))
-      case list if !list.get.isEmpty => Ok(views.html.index(list.get, ""))
+    postService.getAllPosts match {
+      case Success(posts) => posts match {
+        case posts if posts.isEmpty  => Ok(views.html.index(posts, PostForm.form, Messages("posts.nodata")))
+        case posts if !posts.isEmpty => Ok(views.html.index(posts, PostForm.form, ""))
+      }
+      case _ => Ok(views.html.error())
     }
   }
 
-  def createPost(): EssentialAction = withAuth { username => implicit request: Request[AnyContent] =>
-
+  def createPost() = Action { implicit request: Request[AnyContent] =>
     PostForm.form.bindFromRequest.fold(
       formWithErrors => {
-        BadRequest(views.html.createPost(formWithErrors))
+        val list = postService.getAllPosts.get
+        BadRequest(views.html.index(list, formWithErrors, ""))
       },
       form => {
         val authorId = request.session.get(IDSessionKey).get.toLong
         postService.createNewPost(form, authorId) match {
-          case true => Redirect(routes.PostController.index())
-          case _    => Ok(views.html.error())
+          case Success(result) if result == ResultStatus.Succeed => Redirect("/posts").flashing("status" -> "ok")
+          case _ => Ok(views.html.error())
         }
       }
+
     )
   }
 }

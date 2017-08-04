@@ -2,3 +2,8 @@
 register.accout.exist=Account already exists
 login.fail=Email or Password Wrong
 posts.nodata=There are not no post at time
+
+post.status.success=Created a post successfully
+post.status.error=Title is 10 between 100 and Content is 200 and 1000 characters  Please try again!
+
+
