@@ -324,9 +324,12 @@ textarea{
     background-color: #fff7ec;
 }
 
-.container-logout{
+.container-logout .authen-container{
     width: 100%;
+}
 
+.before-authen{
+    margin-left: 88%;
 }
 
 .before-logout{

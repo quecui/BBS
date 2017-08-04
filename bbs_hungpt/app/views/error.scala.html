@@ -1,4 +1,4 @@
-@(message: String = "Error happened. Please contact admin")
+@(message: String = "Error happened. Please contact admin")(implicit session: Session)
 
 @main("BBS", "username"){
     <div class="error-message"> @message </div>

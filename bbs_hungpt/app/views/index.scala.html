@@ -2,10 +2,13 @@
 @import forms.PostForm
 @import helper._
 @(listPost: List[PostDTO], postForm: Form[PostForm], message: String)(implicit messagesProvider: MessagesProvider,
-        request: RequestHeader, flash: Flash)
+        request: RequestHeader, flash: Flash, session: Session)
 
 @main("Blog Septeni-Technology", "username") {
-  @views.html.createPost(postForm)
+  @if(session.get("username").isDefined){
+    @views.html.createPost(postForm)
+  }
+
   <div class="body-post">
     <span class="all-post"><b>All posts</b></span>
     <div class="post-contaner">

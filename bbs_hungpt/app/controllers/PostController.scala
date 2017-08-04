@@ -14,7 +14,7 @@ import scala.util.{ Failure, Success, Try }
 class PostController @Inject() (controllerComponent: ControllerComponents, postService: PostService)
   extends AbstractController(controllerComponent) with I18nSupport with Secured {
 
-  def index(): EssentialAction = withAuth { username => implicit request: Request[AnyContent] =>
+  def index() = Action { implicit request: Request[AnyContent] =>
     postService.getAllPosts match {
       case Success(posts) => posts match {
         case posts if posts.isEmpty  => Ok(views.html.index(posts, PostForm.form, Messages("posts.nodata")))

@@ -1,5 +1,5 @@
 
-@(title: String, username: String)(content: Html)
+@(title: String, username: String)(content: Html)(implicit session: Session)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,12 +12,21 @@
     </head>
     <body>
         <h1 class="title">Blog Septeni-Technology</h1>
-        <div class="container-logout">
-            <span class="before-logout"></span>
-            @if(username != "") {
-                <span><button class="btn-logout"><a href="@routes.UserController.logout()" class="link-logout">Logout</a></button></span>
-            }
-        </div>
+        @if(session.get("username").isDefined) {
+            <h1>@session.get("username")</h1>
+            <div class="container-logout">
+                <span class="before-logout"></span>
+                @if(username != "") {
+                    <span><button class="btn-logout"><a href="@routes.UserController.logout()" class="link-logout">Logout</a></button></span>
+                }
+            </div>
+        }else{
+            <div class="authen-container">
+                <span class="before-authen"></span>
+                <button>Login</button> <button>Register</button>
+            </div>
+        }
+
         <div class="container-body">
         @content
         </div>

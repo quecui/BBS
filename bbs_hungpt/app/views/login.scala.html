@@ -1,7 +1,8 @@
 @import helper._
 @import forms.LoginForm
 
-@(loginForm: Form[LoginForm], message: String)(implicit messagesProvider: MessagesProvider, request: RequestHeader)
+@(loginForm: Form[LoginForm], message: String)(implicit messagesProvider: MessagesProvider,
+        request: RequestHeader, session: Session)
 @main("BBS", ""){
     <div class="login-page">
         <div class="form">

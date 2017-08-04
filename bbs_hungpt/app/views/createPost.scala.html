@@ -1,6 +1,7 @@
 @import helper._
 @import forms.PostForm
-@(postForm: Form[PostForm])(implicit messagesProvider: MessagesProvider, request: RequestHeader, flash: Flash)
+@(postForm: Form[PostForm])(implicit messagesProvider: MessagesProvider, request: RequestHeader,
+        flash: Flash, session: Session)
 
 <div>
     <div class="create-post-title">What News ! You can create Post now !</div>

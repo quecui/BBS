@@ -6,11 +6,11 @@
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
 
-GET    /                          controllers.UserController.authenticate
+
 POST   /login                     controllers.UserController.authenticate
 
 POST    /post                     controllers.PostController.createPost
-GET    /posts                     controllers.PostController.index
+GET    /                          controllers.PostController.index
 
 GET    /register                  controllers.UserController.register
 POST   /register/process          controllers.UserController.register
